@@ -1,0 +1,15 @@
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\obj\Debug\Jupporter.csproj.AssemblyReference.cache
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\obj\Debug\Jupporter.Main.resources
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\obj\Debug\Jupporter.Properties.Resources.resources
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\obj\Debug\Jupporter.csproj.GenerateResource.cache
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\obj\Debug\Jupporter.csproj.CoreCompileInputs.cache
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\bin\Debug\Jupporter.exe.config
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\bin\Debug\Jupporter.exe
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\bin\Debug\Jupporter.pdb
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\bin\Debug\log4net.dll
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\bin\Debug\NLog.dll
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\bin\Debug\log4net.xml
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\bin\Debug\NLog.xml
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\obj\Debug\Jupporter.csproj.Up2Date
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\obj\Debug\Jupporter.exe
+C:\Users\jmkim\Documents\GitHub\Jupporter\Jupporter\obj\Debug\Jupporter.pdb
