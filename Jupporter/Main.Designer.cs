@@ -45,6 +45,7 @@ namespace Jupporter
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -104,6 +105,7 @@ namespace Jupporter
             // 
             this.panel2.BackColor = System.Drawing.Color.DimGray;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label3);
@@ -123,9 +125,9 @@ namespace Jupporter
             this.button1.BackColor = System.Drawing.Color.DimGray;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(535, 215);
+            this.button1.Location = new System.Drawing.Point(535, 234);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(95, 43);
+            this.button1.Size = new System.Drawing.Size(95, 24);
             this.button1.TabIndex = 7;
             this.button1.Text = "설정파일 열기";
             this.button1.UseVisualStyleBackColor = false;
@@ -208,6 +210,16 @@ namespace Jupporter
             this.textBox1.Size = new System.Drawing.Size(512, 254);
             this.textBox1.TabIndex = 0;
             // 
+            // panel3
+            // 
+            this.panel3.BackgroundImage = global::Jupporter.Properties.Resources.on;
+            this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel3.Location = new System.Drawing.Point(535, 203);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(95, 25);
+            this.panel3.TabIndex = 8;
+            this.panel3.Click += new System.EventHandler(this.panel3_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -249,6 +261,7 @@ namespace Jupporter
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 프로그램종료ToolStripMenuItem;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel3;
     }
 }
 

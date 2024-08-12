@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jupporter.Properties;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Jupporter
 {
@@ -17,6 +19,7 @@ namespace Jupporter
         private static System.Windows.Forms.Timer tScheduler;
         private Point mousePoint;
         private int targetPID = 0;
+        private bool isRunning = true;
         #endregion
 
         #region Structure definition
@@ -25,6 +28,11 @@ namespace Jupporter
 
         [DllImport("user32.dll")]
         public static extern bool DestroyIcon(IntPtr hIcon);
+
+        [DllImport("user32.dll")] 
+        private static extern int RegisterHotKey(int hwnd, int id, int fsModifiers, int vk);
+        [DllImport("user32.dll")] 
+        private static extern int UnregisterHotKey(int hwnd, int id);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct SHFILEINFO
@@ -103,47 +111,56 @@ namespace Jupporter
         #region Form Function
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            UnregisterHotKey((int)this.Handle, 0);
             e.Cancel = true;
             program_Exit(false);
         }
         private void Main_Load(object sender, EventArgs e)
         {
+            RegisterHotKey((int)this.Handle, 0, 0x0, (int)Keys.Escape);
             new Thread(delegate ()
             {
                 while (!this.IsDisposed)
                 {
-                    try
+                    if (this.isRunning)
                     {
-                        Process[] targetProc = Process.GetProcesses()
-                                      .Where(p => string.Equals(p.ProcessName, Path.GetFileName(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase) || string.Equals(p.ProcessName, Path.GetFileNameWithoutExtension(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase))
-                                      .ToArray();
-                        if (targetProc.Length != 0)
+                        try
                         {
-                            targetPID = targetProc[0].Id;
-                            label3.Text = string.Format("PID: {0}", targetProc[0].Id);
-                        }
-                        else
-                        {
-                            targetPID = 0;
-                            label3.Text = string.Format("No Detected");
-                        }
-                        if (targetPID == 0)
-                        {
-                            if (IniProperties.targetPath.Contains("./"))
+                            Process[] targetProc = Process.GetProcesses()
+                                          .Where(p => string.Equals(p.ProcessName, Path.GetFileName(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase) || string.Equals(p.ProcessName, Path.GetFileNameWithoutExtension(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase))
+                                          .ToArray();
+                            if (targetProc.Length != 0)
                             {
-                                Process.Start(Application.StartupPath + @"\" + IniProperties.targetPath.Replace("./", ""), IniProperties.runOption);
+                                targetPID = targetProc[0].Id;
+                                label3.Text = string.Format("PID: {0}", targetProc[0].Id);
                             }
                             else
                             {
-                                Process.Start(IniProperties.targetPath, IniProperties.runOption);
+                                targetPID = 0;
+                                label3.Text = string.Format("No Detected");
                             }
+                            if (targetPID == 0)
+                            {
+                                if (IniProperties.targetPath.Contains("./"))
+                                {
+                                    Process.Start(Application.StartupPath + @"\" + IniProperties.targetPath.Replace("./", ""), IniProperties.runOption);
+                                }
+                                else
+                                {
+                                    Process.Start(IniProperties.targetPath, IniProperties.runOption);
+                                }
 
-                            DevLog.Write("타겟 프로세스가 종료되어 재실행하였습니다.");
+                                DevLog.Write("타겟 프로세스가 종료되어 재실행하였습니다.");
+                            }
                         }
-                    }
-                    catch (Exception e1)
+                        catch (Exception e1)
+                        {
+                            DevLog.Write(e1.Message, LOG_LEVEL.ERROR);
+                        }
+                    } else
                     {
-                        DevLog.Write(e1.Message, LOG_LEVEL.ERROR);
+                        targetPID = 0;
+                        label3.Text = string.Format("No Detected");
                     }
                     Thread.Sleep(IniProperties.refreshCycle);
                 }
@@ -162,7 +179,6 @@ namespace Jupporter
                     }
                 }
 
-                // 아이콘 핸들 해제
                 DestroyIcon(shinfo.hIcon);
             }
             else
@@ -170,13 +186,61 @@ namespace Jupporter
                 MessageBox.Show("아이콘을 가져오는 데 실패했습니다. 경로와 파일이 유효한지 확인하세요.");
             }
 
-            // 아이콘 핸들을 해제
             DestroyIcon(shinfo.hIcon);
             label2.Text = Path.GetFileName(IniProperties.targetPath);
         }
 
         #endregion
         #region Function
+
+        private void changeIsRunning(bool isRunning)
+        {
+            if (this.isRunning)
+            {
+                try
+                {
+                    Process[] processes = Process.GetProcesses()
+                                  .Where(p => string.Equals(p.ProcessName, Path.GetFileName(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase) || string.Equals(p.ProcessName, Path.GetFileNameWithoutExtension(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase))
+                                  .ToArray();
+
+                    foreach (Process process in processes)
+                    {
+                        process.Kill();
+                        process.WaitForExit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DevLog.Write($"에러 발생: {ex.Message}");
+                }
+
+                DevLog.Write("사용자에 의해 타겟프로그램을 종료하였습니다.", LOG_LEVEL.INFO);
+
+                panel3.BackgroundImage = Resources.off;
+                this.isRunning = false;
+                this.Visible = true;
+                this.Activate();
+            }
+            else
+            {
+                panel3.BackgroundImage = Resources.on;
+                this.isRunning = true;
+                this.Visible = false;
+            }
+        }
+
+        private void panel3_Click(object sender, EventArgs e)
+        {
+            if (this.isRunning)
+            {
+                changeIsRunning(false);
+            }
+            else
+            {
+                changeIsRunning(true);
+            }
+        }
+
         private void 프로그램종료ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             program_Exit(false);
@@ -217,6 +281,24 @@ namespace Jupporter
                     this.Top - (mousePoint.Y - e.Y));
             }
         }
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == (int)0x312)
+            {
+                if (m.WParam == (IntPtr)0x0)
+                {
+                    if (isRunning)
+                    {
+                        changeIsRunning(false);
+                    } else
+                    {
+                        changeIsRunning(true);
+                    }
+                }
+            }
+        }
+
         private int CalculateTimerInterval()
         {
             string[] timeStr = IniProperties.autoRestartTime.Split(',');
@@ -245,25 +327,22 @@ namespace Jupporter
 
             if (IniProperties.autoRestart)
             {
-                ProcessStartInfo pri = new ProcessStartInfo();
-                Process pro = new Process();
-                pri.FileName = Path.GetFileName(IniProperties.targetPath);
+                try
+                {
+                    Process[] processes = Process.GetProcesses()
+                                  .Where(p => string.Equals(p.ProcessName, Path.GetFileName(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase) || string.Equals(p.ProcessName, Path.GetFileNameWithoutExtension(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase))
+                                  .ToArray();
 
-                pri.CreateNoWindow = false;
-                pri.UseShellExecute = false;
-
-                pri.RedirectStandardInput = true;
-                pri.RedirectStandardOutput = true;
-                pri.RedirectStandardError = true;
-
-                pro.StartInfo = pri;
-                pro.Start();
-
-                pro.StandardInput.Write(@"taskkill /f /pid " + targetPID + Environment.NewLine);
-                pro.StandardInput.Close();
-                string resultValue = pro.StandardOutput.ReadToEnd();
-                pro.WaitForExit();
-                pro.Close();
+                    foreach (Process process in processes)
+                    {
+                        process.Kill();
+                        process.WaitForExit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DevLog.Write($"에러 발생: {ex.Message}");
+                }
                 DevLog.Write("스케줄러에 의해 타겟프로그램을 종료하였습니다.", LOG_LEVEL.INFO);
             }
         }
