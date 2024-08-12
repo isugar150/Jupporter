@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -15,6 +17,30 @@ namespace Jupporter
         private static System.Windows.Forms.Timer tScheduler;
         private Point mousePoint;
         private int targetPID = 0;
+        #endregion
+
+        #region Structure definition
+        [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+        public static extern int SHGetFileInfo(string pszPath, uint dwFileAttributes, out SHFILEINFO shinfo, uint cbFileInfo, uint uFlags);
+
+        [DllImport("user32.dll")]
+        public static extern bool DestroyIcon(IntPtr hIcon);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SHFILEINFO
+        {
+            public IntPtr hIcon;
+            public int iIcon;
+            public uint dwAttributes;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string szDisplayName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+            public string szTypeName;
+        }
+
+        const uint SHGFI_ICON = 0x000000100;
+        const uint SHGFI_SMALLICON = 0x000000000;
+        const uint SHGFI_LARGEICON = 0x000000000;
         #endregion
 
         public Main()
@@ -36,7 +62,6 @@ namespace Jupporter
                     {
                         pairs.Load("./Jupporter.ini");
                         IniProperties.fileIcon = pairs["Jupporter"]["fileIcon"].ToString();
-                        IniProperties.procName = pairs["Jupporter"]["procName"].ToString();
                         IniProperties.targetPath = pairs["Jupporter"]["targetPath"].ToString();
                         IniProperties.refreshCycle = int.Parse(pairs["Jupporter"]["refreshCycle"].ToString());
                         IniProperties.runOption = pairs["Jupporter"]["runOption"].ToString();
@@ -90,7 +115,9 @@ namespace Jupporter
                 {
                     try
                     {
-                        Process[] targetProc = Process.GetProcessesByName(IniProperties.procName);
+                        Process[] targetProc = Process.GetProcesses()
+                                      .Where(p => string.Equals(p.ProcessName, Path.GetFileName(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase) || string.Equals(p.ProcessName, Path.GetFileNameWithoutExtension(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase))
+                                      .ToArray();
                         if (targetProc.Length != 0)
                         {
                             targetPID = targetProc[0].Id;
@@ -112,7 +139,7 @@ namespace Jupporter
                                 Process.Start(IniProperties.targetPath, IniProperties.runOption);
                             }
 
-                            DevLog.Write("타겟 프로세스를 실행하였습니다.");
+                            DevLog.Write("타겟 프로세스가 종료되어 재실행하였습니다.");
                         }
                     }
                     catch (Exception e1)
@@ -123,10 +150,30 @@ namespace Jupporter
                 }
             }).Start();
 
-            if (IniProperties.fileIcon != null && !IniProperties.fileIcon.Equals(""))
-                pictureBox1.Image = Image.FromFile(IniProperties.fileIcon);
-            if (IniProperties.procName != null && !IniProperties.procName.Equals(""))
-                label2.Text = IniProperties.procName;
+            SHFILEINFO shinfo;
+            int result = SHGetFileInfo(IniProperties.targetPath, 0, out shinfo, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_ICON | SHGFI_LARGEICON);
+
+            if (result != 0 && shinfo.hIcon != IntPtr.Zero)
+            {
+                using (Icon icon = Icon.FromHandle(shinfo.hIcon))
+                {
+                    using (Bitmap bitmap = icon.ToBitmap())
+                    {
+                        pictureBox1.Image = (Image)bitmap.Clone();
+                    }
+                }
+
+                // 아이콘 핸들 해제
+                DestroyIcon(shinfo.hIcon);
+            }
+            else
+            {
+                MessageBox.Show("아이콘을 가져오는 데 실패했습니다. 경로와 파일이 유효한지 확인하세요.");
+            }
+
+            // 아이콘 핸들을 해제
+            DestroyIcon(shinfo.hIcon);
+            label2.Text = Path.GetFileName(IniProperties.targetPath);
         }
 
         #endregion
@@ -139,6 +186,11 @@ namespace Jupporter
         private void button3_Click(object sender, EventArgs e)
         {
             this.Visible = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Process.Start(@".\Jupporter.ini");
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
@@ -264,6 +316,5 @@ namespace Jupporter
             }
         }
         #endregion
-
     }
 }
