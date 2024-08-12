@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|solutionrelative:jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|c:\\users\\jmkim\\documents\\github\\jupporter\\jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|solutionrelative:jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\jupporter\\main.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|solutionrelative:jupporter\\main.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|solutionrelative:jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\jupporter\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,11 +30,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Main.Designer.cs",
               "DocumentMoniker": "C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\Jupporter\\Main.Designer.cs",
               "RelativeDocumentMoniker": "Jupporter\\Main.Designer.cs",
@@ -71,20 +71,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Main.cs",
               "DocumentMoniker": "C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\Jupporter\\Main.cs",
               "RelativeDocumentMoniker": "Jupporter\\Main.cs",
               "ToolTip": "C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\Jupporter\\Main.cs",
               "RelativeToolTip": "Jupporter\\Main.cs",
-              "ViewState": "AQIAAC0AAAAAAAAAAAA1wEkAAABhAAAA",
+              "ViewState": "AQIAAAcAAAAAAAAAAAAMwBgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-09T07:14:49.51Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Main.cs [\uB514\uC790\uC778]",
               "DocumentMoniker": "C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\Jupporter\\Main.cs",
               "RelativeDocumentMoniker": "Jupporter\\Main.cs",

@@ -236,7 +236,7 @@ namespace Jupporter
 
         private void tScheduler_Tick(object sender, EventArgs e)
         {
-            Thread.Sleep(3000);
+            Thread.Sleep(1000);
             try
             {
                 tScheduler.Interval = CalculateTimerInterval();
@@ -247,7 +247,7 @@ namespace Jupporter
             {
                 ProcessStartInfo pri = new ProcessStartInfo();
                 Process pro = new Process();
-                pri.FileName = "cmd.exe";
+                pri.FileName = Path.GetFileName(IniProperties.targetPath);
 
                 pri.CreateNoWindow = false;
                 pri.UseShellExecute = false;
