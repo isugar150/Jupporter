@@ -61,7 +61,6 @@ namespace Jupporter
                     if (new FileInfo("./Jupporter.ini").Exists)
                     {
                         pairs.Load("./Jupporter.ini");
-                        IniProperties.fileIcon = pairs["Jupporter"]["fileIcon"].ToString();
                         IniProperties.targetPath = pairs["Jupporter"]["targetPath"].ToString();
                         IniProperties.refreshCycle = int.Parse(pairs["Jupporter"]["refreshCycle"].ToString());
                         IniProperties.runOption = pairs["Jupporter"]["runOption"].ToString();
