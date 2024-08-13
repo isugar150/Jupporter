@@ -2,6 +2,9 @@
 Jupporter는 윈도우에서 프로세스가 종료되면 다시 실행하는 프로그램입니다.
 
 ## 사용법
+* ESC를 누르거나 화면의 on/off버튼 클릭 시 아래 기능이 toggle형식으로 작동합니다.
+  - 실행: Jupporter 숨김 및 타겟 프로그램 실행
+  - 중단: Jupporter 보이게 및 타겟 프로그램 종료
 
 ### arguments
 * /autostart - 실행중인 프로그램을 종료 및 윈도우 숨김처리
