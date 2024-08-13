@@ -3,11 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|c:\\users\\jmkim\\documents\\github\\jupporter\\jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|solutionrelative:jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|c:\\users\\jmkim\\documents\\github\\jupporter\\jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|C:\\Users\\jmkim\\Documents\\GitHub\\Jupporter\\jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{32C29E95-04E1-4BC0-B322-37FFA7B8D2E2}|Jupporter\\Jupporter.csproj|solutionrelative:jupporter\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -51,8 +51,7 @@
               "RelativeToolTip": "Jupporter\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-12T00:45:25.974Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-12T00:45:25.974Z"
             },
             {
               "$type": "Document",
