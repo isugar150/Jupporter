@@ -45,6 +45,9 @@ ShowUnInstDetails show
 
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
+  ExecWait "cmd.exe /c taskkill /f /im Jupporter.exe /t & timeout 1"
+  SetOverwrite on
+
   File ".\Jupporter\bin\Release\Jupporter.exe"
   File ".\Jupporter\bin\Release\log4net.dll"
   File ".\Jupporter\bin\Release\log4net.xml"
@@ -84,6 +87,9 @@ Function un.onInit
 FunctionEnd
 
 Section Uninstall
+  SetOutPath "$INSTDIR"
+  ExecWait "cmd.exe /c taskkill /f /im Jupporter.exe /t & timeout 1"
+
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\Jupporter.exe"
   Delete "$INSTDIR\log4net.dll"
