@@ -20,6 +20,7 @@ namespace Jupporter
         private Point mousePoint;
         private int targetPID = 0;
         private bool isRunning = true;
+        private bool autoStart = false;
         #endregion
 
         #region Structure definition
@@ -51,24 +52,19 @@ namespace Jupporter
         const uint SHGFI_LARGEICON = 0x000000000;
         #endregion
 
-        public Main()
+        public Main(string[] args)
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
-            #region 로깅 서비스 등록
-            workProcessTimer.Tick += new EventHandler(OnProcessTimedEvent);
-            workProcessTimer.Interval = new TimeSpan(0, 0, 0, 0, 32);
-            workProcessTimer.Start();
-            #endregion
             #region 환경 설정 파싱
             IniFile pairs = new IniFile();
             while (true)
             {
                 try
                 {
-                    if (new FileInfo("./Jupporter.ini").Exists)
+                    if (new FileInfo(Application.StartupPath + "/Jupporter.ini").Exists)
                     {
-                        pairs.Load("./Jupporter.ini");
+                        pairs.Load(Application.StartupPath + "/Jupporter.ini");
                         IniProperties.targetPath = pairs["Jupporter"]["targetPath"].ToString();
                         IniProperties.refreshCycle = int.Parse(pairs["Jupporter"]["refreshCycle"].ToString());
                         IniProperties.runOption = pairs["Jupporter"]["runOption"].ToString();
@@ -82,8 +78,9 @@ namespace Jupporter
                         MessageBox.Show("설정 파일을 생성하였습니다.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    MessageBox.Show("설정 파일 초기화 중 오류가 발생하였습니다. " + e.Message);
                     if (MessageBox.Show("설정 파일이 손상되었습니다. 초기화하시겠습니까?", "알림", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         Setting.createSetting();
@@ -96,6 +93,11 @@ namespace Jupporter
                 }
             }
             #endregion
+            #region 로깅 서비스 등록
+            workProcessTimer.Tick += new EventHandler(OnProcessTimedEvent);
+            workProcessTimer.Interval = new TimeSpan(0, 0, 0, 0, 32);
+            workProcessTimer.Start();
+            #endregion
             #region 스케줄러 관련
             tScheduler = new System.Windows.Forms.Timer();
             tScheduler.Interval = CalculateTimerInterval();
@@ -105,6 +107,18 @@ namespace Jupporter
             DevLog.Write("타겟 프로세스 자동 재시작: " + (IniProperties.autoRestart ? "Y" : "n"), LOG_LEVEL.INFO);
             if (IniProperties.autoRestart)
                 DevLog.Write("다음 스케줄러 작동시간: " + (DateTime.Now + TimeSpan.FromMilliseconds(tScheduler.Interval)));
+            #endregion
+            #region args
+            if (args.Length != 0)
+            {
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (args[i].ToLower().Contains("/autostart"))
+                    {
+                        autoStart = true;
+                    }
+                }
+            }
             #endregion
         }
 
@@ -181,18 +195,38 @@ namespace Jupporter
 
                 DestroyIcon(shinfo.hIcon);
             }
-            else
-            {
-                MessageBox.Show("아이콘을 가져오는 데 실패했습니다. 경로와 파일이 유효한지 확인하세요.");
-            }
 
             DestroyIcon(shinfo.hIcon);
-            label2.Text = Path.GetFileName(IniProperties.targetPath);
+            label2.Text = Path.GetFileNameWithoutExtension(IniProperties.targetPath);
+
+        }
+
+        private void Main_Shown(object sender, EventArgs e)
+        {
+            if (this.autoStart)
+            {
+                try
+                {
+                    Process[] processes = Process.GetProcesses()
+                                  .Where(p => string.Equals(p.ProcessName, Path.GetFileName(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase) || string.Equals(p.ProcessName, Path.GetFileNameWithoutExtension(IniProperties.targetPath), StringComparison.OrdinalIgnoreCase))
+                                  .ToArray();
+
+                    foreach (Process process in processes)
+                    {
+                        process.Kill();
+                        process.WaitForExit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DevLog.Write($"에러 발생: {ex.Message}");
+                }
+                this.Visible = false;
+            }
         }
 
         #endregion
         #region Function
-
         private void changeIsRunning(bool isRunning)
         {
             if (this.isRunning)
@@ -218,14 +252,14 @@ namespace Jupporter
 
                 panel3.BackgroundImage = Resources.off;
                 this.isRunning = false;
-                this.Visible = true;
+                this.Show();
                 this.Activate();
             }
             else
             {
                 panel3.BackgroundImage = Resources.on;
                 this.isRunning = true;
-                this.Visible = false;
+                this.Hide();
             }
         }
 
@@ -248,12 +282,12 @@ namespace Jupporter
 
         private void button3_Click(object sender, EventArgs e)
         {
-            this.Visible = false;
+            this.Hide();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Process.Start(@".\Jupporter.ini");
+            Process.Start(Application.StartupPath + @"\Jupporter.ini");
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
@@ -261,11 +295,11 @@ namespace Jupporter
 
             if (this.Visible && e.Button == MouseButtons.Left)
             {
-                this.Visible = false;
+                this.Hide();
             }
             else
             {
-                this.Visible = true;
+                this.Show();
             }
         }
         private void panel1_MouseDown(object sender, MouseEventArgs e)

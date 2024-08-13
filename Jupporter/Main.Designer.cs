@@ -38,6 +38,7 @@ namespace Jupporter
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -45,7 +46,6 @@ namespace Jupporter
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -118,6 +118,16 @@ namespace Jupporter
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(640, 320);
             this.panel2.TabIndex = 2;
+            // 
+            // panel3
+            // 
+            this.panel3.BackgroundImage = global::Jupporter.Properties.Resources.on;
+            this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel3.Location = new System.Drawing.Point(535, 203);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(95, 25);
+            this.panel3.TabIndex = 8;
+            this.panel3.Click += new System.EventHandler(this.panel3_Click);
             // 
             // button1
             // 
@@ -210,16 +220,6 @@ namespace Jupporter
             this.textBox1.Size = new System.Drawing.Size(512, 254);
             this.textBox1.TabIndex = 0;
             // 
-            // panel3
-            // 
-            this.panel3.BackgroundImage = global::Jupporter.Properties.Resources.on;
-            this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.panel3.Location = new System.Drawing.Point(535, 203);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(95, 25);
-            this.panel3.TabIndex = 8;
-            this.panel3.Click += new System.EventHandler(this.panel3_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -231,12 +231,15 @@ namespace Jupporter
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(640, 320);
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "DocConvert Manager";
+            this.Text = "Jupporter";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
+            this.Shown += new System.EventHandler(this.Main_Shown);
             this.contextMenuStrip1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);

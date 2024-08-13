@@ -63,7 +63,7 @@ SectionEnd
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
   WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\Jupporter.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "Jupporter" '"$InstDir\Jupporter.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "Jupporter" '"$InstDir\Jupporter.exe" /autostart'
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Jupporter.exe"
@@ -75,11 +75,11 @@ SectionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name)��(��) ������ ���ŵǾ����ϴ�."
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name)  (  )           ŵǾ    ϴ ."
 FunctionEnd
 
 Function un.onInit
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "$(^Name)��(��) �����Ͻðڽ��ϱ�?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "$(^Name)  (  )      Ͻðڽ  ϱ ?" IDYES +2
   Abort
 FunctionEnd
 

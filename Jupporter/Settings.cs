@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Jupporter
 {
@@ -41,7 +42,7 @@ namespace Jupporter
             setting["Jupporter"]["autoRestart"] = "n";
             setting["Jupporter"]["autoRestartTime"] = "2,0,0";
 
-            setting.Save("./Jupporter.ini");
+            setting.Save(Application.StartupPath + "/Jupporter.ini");
         }
     }
 }
