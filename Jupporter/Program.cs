@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Jupporter
@@ -13,11 +10,18 @@ namespace Jupporter
         /// 해당 애플리케이션의 주 진입점입니다.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main(args));
+            using (Mutex mutex = new Mutex(false, "Global\\3c81c1dd-9755-4c8a-a700-72f31fba8414"))
+            {
+                if (!mutex.WaitOne(500, false))
+                {
+                    return;
+                }
+                /*Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);*/
+                Application.Run(new Main(args));
+            }
         }
     }
 }
